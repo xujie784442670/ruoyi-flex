@@ -1,0 +1,2 @@
+com.ruoyi.common.job.config.PowerJobConfig
+com.ruoyi.common.job.config.EasyRetryConfig

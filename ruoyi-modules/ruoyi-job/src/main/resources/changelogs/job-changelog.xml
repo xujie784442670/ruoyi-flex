@@ -1,0 +1,240 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="xujie (generated)" id="1747555580318-1">
+        <createTable tableName="pj_app_info">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="app_name" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="current_server" type="VARCHAR(255)"/>
+            <column name="gmt_create" type="datetime(6)"/>
+            <column name="gmt_modified" type="datetime(6)"/>
+            <column name="password" type="VARCHAR(255)"/>
+        </createTable>
+        <createTable tableName="pj_container_info">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="app_id" type="BIGINT"/>
+            <column name="container_name" type="VARCHAR(255)"/>
+            <column name="gmt_create" type="datetime(6)"/>
+            <column name="gmt_modified" type="datetime(6)"/>
+            <column name="last_deploy_time" type="datetime(6)"/>
+            <column name="source_info" type="VARCHAR(255)"/>
+            <column name="source_type" type="INT"/>
+            <column name="status" type="INT"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+        <createTable tableName="pj_instance_info">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="actual_trigger_time" type="BIGINT"/>
+            <column name="app_id" type="BIGINT"/>
+            <column name="expected_trigger_time" type="BIGINT"/>
+            <column name="finished_time" type="BIGINT"/>
+            <column name="gmt_create" type="datetime(6)"/>
+            <column name="gmt_modified" type="datetime(6)"/>
+            <column name="instance_id" type="BIGINT"/>
+            <column name="instance_params" type="LONGTEXT"/>
+            <column name="job_id" type="BIGINT"/>
+            <column name="job_params" type="LONGTEXT"/>
+            <column name="last_report_time" type="BIGINT"/>
+            <column name="result" type="LONGTEXT"/>
+            <column name="running_times" type="BIGINT"/>
+            <column name="status" type="INT"/>
+            <column name="task_tracker_address" type="VARCHAR(255)"/>
+            <column name="type" type="INT"/>
+            <column name="wf_instance_id" type="BIGINT"/>
+        </createTable>
+        <createTable tableName="pj_job_info">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="alarm_config" type="VARCHAR(255)"/>
+            <column name="app_id" type="BIGINT"/>
+            <column name="concurrency" type="INT"/>
+            <column name="designated_workers" type="VARCHAR(255)"/>
+            <column name="dispatch_strategy" type="INT"/>
+            <column name="execute_type" type="INT"/>
+            <column name="extra" type="VARCHAR(255)"/>
+            <column name="gmt_create" type="datetime(6)"/>
+            <column name="gmt_modified" type="datetime(6)"/>
+            <column name="instance_retry_num" type="INT"/>
+            <column name="instance_time_limit" type="BIGINT"/>
+            <column name="job_description" type="VARCHAR(255)"/>
+            <column name="job_name" type="VARCHAR(255)"/>
+            <column name="job_params" type="LONGTEXT"/>
+            <column name="lifecycle" type="VARCHAR(255)"/>
+            <column name="log_config" type="VARCHAR(255)"/>
+            <column name="max_instance_num" type="INT"/>
+            <column name="max_worker_count" type="INT"/>
+            <column name="min_cpu_cores" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="min_disk_space" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="min_memory_space" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="next_trigger_time" type="BIGINT"/>
+            <column name="notify_user_ids" type="VARCHAR(255)"/>
+            <column name="processor_info" type="VARCHAR(255)"/>
+            <column name="processor_type" type="INT"/>
+            <column name="status" type="INT"/>
+            <column name="tag" type="VARCHAR(255)"/>
+            <column name="task_retry_num" type="INT"/>
+            <column name="time_expression" type="VARCHAR(255)"/>
+            <column name="time_expression_type" type="INT"/>
+        </createTable>
+        <createTable tableName="pj_oms_lock">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="gmt_create" type="datetime(6)"/>
+            <column name="gmt_modified" type="datetime(6)"/>
+            <column name="lock_name" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="max_lock_time" type="BIGINT"/>
+            <column name="ownerip" type="VARCHAR(255)"/>
+        </createTable>
+        <createTable tableName="pj_server_info">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="gmt_create" type="datetime(6)"/>
+            <column name="gmt_modified" type="datetime(6)"/>
+            <column name="ip" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+        </createTable>
+        <createTable tableName="pj_user_info">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="extra" type="VARCHAR(255)"/>
+            <column name="gmt_create" type="datetime(6)"/>
+            <column name="gmt_modified" type="datetime(6)"/>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="phone" type="VARCHAR(255)"/>
+            <column name="username" type="VARCHAR(255)"/>
+            <column name="web_hook" type="VARCHAR(255)"/>
+        </createTable>
+        <createTable tableName="pj_workflow_info">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="app_id" type="BIGINT"/>
+            <column name="extra" type="VARCHAR(255)"/>
+            <column name="gmt_create" type="datetime(6)"/>
+            <column name="gmt_modified" type="datetime(6)"/>
+            <column name="lifecycle" type="VARCHAR(255)"/>
+            <column name="max_wf_instance_num" type="INT"/>
+            <column name="next_trigger_time" type="BIGINT"/>
+            <column name="notify_user_ids" type="VARCHAR(255)"/>
+            <column name="pedag" type="LONGTEXT"/>
+            <column name="status" type="INT"/>
+            <column name="time_expression" type="VARCHAR(255)"/>
+            <column name="time_expression_type" type="INT"/>
+            <column name="wf_description" type="VARCHAR(255)"/>
+            <column name="wf_name" type="VARCHAR(255)"/>
+        </createTable>
+        <createTable tableName="pj_workflow_instance_info">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="actual_trigger_time" type="BIGINT"/>
+            <column name="app_id" type="BIGINT"/>
+            <column name="dag" type="LONGTEXT"/>
+            <column name="expected_trigger_time" type="BIGINT"/>
+            <column name="finished_time" type="BIGINT"/>
+            <column name="gmt_create" type="datetime(6)"/>
+            <column name="gmt_modified" type="datetime(6)"/>
+            <column name="parent_wf_instance_id" type="BIGINT"/>
+            <column name="result" type="LONGTEXT"/>
+            <column name="status" type="INT"/>
+            <column name="wf_context" type="LONGTEXT"/>
+            <column name="wf_init_params" type="LONGTEXT"/>
+            <column name="wf_instance_id" type="BIGINT">
+                <constraints unique="true"/>
+            </column>
+            <column name="workflow_id" type="BIGINT"/>
+        </createTable>
+        <createTable tableName="pj_workflow_node_info">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="app_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enable" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="extra" type="LONGTEXT"/>
+            <column name="gmt_create" type="datetime(6)"/>
+            <column name="gmt_modified" type="datetime(6)"/>
+            <column name="job_id" type="BIGINT"/>
+            <column name="node_name" type="VARCHAR(255)"/>
+            <column name="node_params" type="LONGTEXT"/>
+            <column name="skip_when_failed" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="INT"/>
+            <column name="workflow_id" type="BIGINT"/>
+        </createTable>
+        <createIndex associatedWith="" indexName="idx01_container_info" tableName="pj_container_info">
+            <column name="app_id"/>
+        </createIndex>
+        <createIndex associatedWith="" indexName="idx01_instance_info" tableName="pj_instance_info">
+            <column name="job_id"/>
+            <column name="status"/>
+        </createIndex>
+        <createIndex associatedWith="" indexName="idx01_job_info" tableName="pj_job_info">
+            <column name="app_id"/>
+            <column name="status"/>
+            <column name="time_expression_type"/>
+            <column name="next_trigger_time"/>
+        </createIndex>
+        <createIndex associatedWith="" indexName="idx01_server_info" tableName="pj_server_info">
+            <column name="gmt_modified"/>
+        </createIndex>
+        <createIndex associatedWith="" indexName="idx01_wf_instance" tableName="pj_workflow_instance_info">
+            <column name="workflow_id"/>
+            <column name="status"/>
+            <column name="app_id"/>
+            <column name="expected_trigger_time"/>
+        </createIndex>
+        <createIndex associatedWith="" indexName="idx01_workflow_info" tableName="pj_workflow_info">
+            <column name="app_id"/>
+            <column name="status"/>
+            <column name="time_expression_type"/>
+            <column name="next_trigger_time"/>
+        </createIndex>
+        <createIndex associatedWith="" indexName="idx01_workflow_node_info" tableName="pj_workflow_node_info">
+            <column name="workflow_id"/>
+            <column name="gmt_create"/>
+        </createIndex>
+        <createIndex associatedWith="" indexName="idx02_instance_info" tableName="pj_instance_info">
+            <column name="app_id"/>
+            <column name="status"/>
+        </createIndex>
+        <createIndex associatedWith="" indexName="idx03_instance_info" tableName="pj_instance_info">
+            <column name="instance_id"/>
+            <column name="status"/>
+        </createIndex>
+        <createIndex associatedWith="" indexName="uidx01_user_info" tableName="pj_user_info">
+            <column name="username"/>
+        </createIndex>
+        <createIndex associatedWith="" indexName="uidx02_user_info" tableName="pj_user_info">
+            <column name="email"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

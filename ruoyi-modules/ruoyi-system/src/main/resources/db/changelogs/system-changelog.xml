@@ -1,0 +1,981 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet author="xujie (generated)" id="1747555580318-1">
+        <createTable remarks="系统授权表" tableName="sys_client">
+            <column name="id" remarks="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="client_id" remarks="客户端id" type="VARCHAR(64)"/>
+            <column name="client_key" remarks="客户端key" type="VARCHAR(32)"/>
+            <column name="client_secret" remarks="客户端秘钥" type="VARCHAR(255)"/>
+            <column name="grant_type" remarks="授权类型" type="VARCHAR(255)"/>
+            <column name="device_type" remarks="设备类型" type="VARCHAR(32)"/>
+            <column defaultValueNumeric="1800" name="active_timeout" remarks="token活跃超时时间" type="INT"/>
+            <column defaultValueNumeric="604800" name="timeout" remarks="token固定超时" type="INT"/>
+            <column defaultValue="0" name="status" remarks="状态（0正常 1停用）" type="CHAR(1)"/>
+            <column defaultValueNumeric="0" name="version" remarks="乐观锁" type="INT"/>
+            <column defaultValueNumeric="0" name="del_flag" remarks="删除标志（0代表存在 1代表删除）" type="SMALLINT"/>
+            <column name="create_dept" remarks="创建部门" type="BIGINT"/>
+            <column name="create_by" remarks="创建者" type="BIGINT"/>
+            <column name="create_time" remarks="创建时间" type="datetime(0)"/>
+            <column name="update_by" remarks="更新者" type="BIGINT"/>
+            <column name="update_time" remarks="更新时间" type="datetime(0)"/>
+            <column name="remark" remarks="备注" type="VARCHAR(250)"/>
+        </createTable>
+        <createTable remarks="参数配置表" tableName="sys_config">
+            <column name="config_id" remarks="参数主键" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueNumeric="1" name="tenant_id" remarks="租户编号" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="" name="config_name" remarks="参数名称" type="VARCHAR(100)"/>
+            <column defaultValue="" name="config_key" remarks="参数键名" type="VARCHAR(100)"/>
+            <column defaultValue="" name="config_value" remarks="参数键值" type="VARCHAR(500)"/>
+            <column defaultValue="N" name="config_type" remarks="系统内置（Y是 N否）" type="CHAR(1)"/>
+            <column defaultValueNumeric="0" name="version" remarks="乐观锁" type="INT"/>
+            <column defaultValueNumeric="0" name="create_by" remarks="创建者" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_time" remarks="创建时间" type="datetime(0)"/>
+            <column defaultValueNumeric="0" name="update_by" remarks="更新者" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="update_time" remarks="更新时间" type="datetime(0)"/>
+            <column name="remark" remarks="备注" type="VARCHAR(500)"/>
+        </createTable>
+        <createTable remarks="部门表" tableName="sys_dept">
+            <column name="dept_id" remarks="部门id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueNumeric="1" name="tenant_id" remarks="租户编号" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="parent_id" remarks="父部门id" type="BIGINT"/>
+            <column defaultValue="" name="ancestors" remarks="祖级列表" type="VARCHAR(760)"/>
+            <column defaultValue="" name="dept_name" remarks="部门名称" type="VARCHAR(30)"/>
+            <column defaultValueNumeric="0" name="order_num" remarks="显示顺序" type="INT"/>
+            <column name="leader" remarks="负责人" type="VARCHAR(20)"/>
+            <column name="phone" remarks="联系电话" type="VARCHAR(11)"/>
+            <column name="email" remarks="邮箱" type="VARCHAR(50)"/>
+            <column defaultValue="0" name="status" remarks="部门状态（0正常 1停用）" type="CHAR(1)"/>
+            <column defaultValueNumeric="0" name="version" remarks="乐观锁" type="INT"/>
+            <column defaultValueNumeric="0" name="del_flag" remarks="删除标志（0代表存在 1代表删除）" type="SMALLINT"/>
+            <column defaultValueNumeric="0" name="create_by" remarks="创建者" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_time" remarks="创建时间" type="datetime(0)"/>
+            <column defaultValueNumeric="0" name="update_by" remarks="更新者" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="update_time" remarks="更新时间" type="datetime(0)"/>
+        </createTable>
+        <createTable remarks="字典数据表" tableName="sys_dict_data">
+            <column name="dict_code" remarks="字典编码" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueNumeric="1" name="tenant_id" remarks="租户编号" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="dict_sort" remarks="字典排序" type="INT"/>
+            <column defaultValue="" name="dict_label" remarks="字典标签" type="VARCHAR(100)"/>
+            <column defaultValue="" name="dict_value" remarks="字典键值" type="VARCHAR(100)"/>
+            <column defaultValue="" name="dict_type" remarks="字典类型" type="VARCHAR(100)"/>
+            <column name="css_class" remarks="样式属性（其他样式扩展）" type="VARCHAR(100)"/>
+            <column name="list_class" remarks="表格回显样式" type="VARCHAR(100)"/>
+            <column defaultValue="N" name="is_default" remarks="是否默认（Y是 N否）" type="CHAR(1)"/>
+            <column defaultValueNumeric="0" name="version" remarks="乐观锁" type="INT"/>
+            <column defaultValueNumeric="0" name="create_by" remarks="创建者" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_time" remarks="创建时间" type="datetime(0)"/>
+            <column defaultValueNumeric="0" name="update_by" remarks="更新者" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="update_time" remarks="更新时间" type="datetime(0)"/>
+            <column name="remark" remarks="备注" type="VARCHAR(500)"/>
+        </createTable>
+        <createTable remarks="字典类型表" tableName="sys_dict_type">
+            <column name="dict_id" remarks="字典主键" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueNumeric="1" name="tenant_id" remarks="租户编号" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="" name="dict_name" remarks="字典名称" type="VARCHAR(100)"/>
+            <column defaultValue="" name="dict_type" remarks="字典类型" type="VARCHAR(100)"/>
+            <column defaultValueNumeric="0" name="version" remarks="乐观锁" type="INT"/>
+            <column defaultValueNumeric="0" name="create_by" remarks="创建者" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_time" remarks="创建时间" type="datetime(0)"/>
+            <column defaultValueNumeric="0" name="update_by" remarks="更新者" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="update_time" remarks="更新时间" type="datetime(0)"/>
+            <column name="remark" remarks="备注" type="VARCHAR(500)"/>
+        </createTable>
+        <createTable remarks="系统访问记录" tableName="sys_logininfor">
+            <column name="info_id" remarks="访问ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueNumeric="1" name="tenant_id" remarks="租户编号" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="" name="user_name" remarks="用户账号" type="VARCHAR(50)"/>
+            <column defaultValue="" name="client_key" remarks="客户端" type="VARCHAR(32)"/>
+            <column defaultValue="" name="device_type" remarks="设备类型" type="VARCHAR(32)"/>
+            <column defaultValue="" name="ipaddr" remarks="登录IP地址" type="VARCHAR(128)"/>
+            <column defaultValue="" name="login_location" remarks="登录地点" type="VARCHAR(255)"/>
+            <column defaultValue="" name="browser" remarks="浏览器类型" type="VARCHAR(50)"/>
+            <column defaultValue="" name="os" remarks="操作系统" type="VARCHAR(50)"/>
+            <column defaultValue="0" name="status" remarks="登录状态（0成功 1失败）" type="CHAR(1)"/>
+            <column defaultValue="" name="msg" remarks="提示消息" type="VARCHAR(255)"/>
+            <column name="login_time" remarks="访问时间" type="datetime(0)"/>
+        </createTable>
+        <createTable remarks="菜单权限表" tableName="sys_menu">
+            <column name="menu_id" remarks="菜单ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="menu_name" remarks="菜单名称" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="parent_id" remarks="父菜单ID" type="BIGINT"/>
+            <column defaultValueNumeric="0" name="order_num" remarks="显示顺序" type="INT"/>
+            <column defaultValue="" name="path" remarks="路由地址" type="VARCHAR(200)"/>
+            <column name="component" remarks="组件路径" type="VARCHAR(255)"/>
+            <column name="query_param" remarks="路由参数" type="VARCHAR(255)"/>
+            <column defaultValueNumeric="1" name="is_frame" remarks="是否为外链（0是 1否）" type="INT"/>
+            <column defaultValueNumeric="0" name="is_cache" remarks="是否缓存（0缓存 1不缓存）" type="INT"/>
+            <column defaultValue="" name="menu_type" remarks="菜单类型（M目录 C菜单 F按钮）" type="CHAR(1)"/>
+            <column defaultValue="0" name="visible" remarks="菜单状态（0显示 1隐藏）" type="CHAR(1)"/>
+            <column defaultValue="0" name="status" remarks="菜单状态（0正常 1停用）" type="CHAR(1)"/>
+            <column name="perms" remarks="权限标识" type="VARCHAR(100)"/>
+            <column defaultValue="#" name="icon" remarks="菜单图标" type="VARCHAR(100)"/>
+            <column defaultValueNumeric="0" name="version" remarks="乐观锁" type="INT"/>
+            <column defaultValueNumeric="0" name="create_by" remarks="创建者" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_time" remarks="创建时间" type="datetime(0)"/>
+            <column defaultValueNumeric="0" name="update_by" remarks="更新者" type="BIGINT"/>
+            <column name="update_time" remarks="更新时间" type="datetime(0)"/>
+            <column defaultValue="" name="remark" remarks="备注" type="VARCHAR(500)"/>
+        </createTable>
+        <createTable remarks="通知公告表" tableName="sys_notice">
+            <column name="notice_id" remarks="公告ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueNumeric="1" name="tenant_id" remarks="租户编号" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="notice_title" remarks="公告标题" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="notice_type" remarks="公告类型（1通知 2公告）" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="notice_content" remarks="公告内容" type="LONGBLOB"/>
+            <column defaultValue="0" name="status" remarks="公告状态（0正常 1关闭）" type="CHAR(1)"/>
+            <column defaultValueNumeric="0" name="version" remarks="乐观锁" type="INT"/>
+            <column defaultValueNumeric="0" name="create_by" remarks="创建者" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_time" remarks="创建时间" type="datetime(0)"/>
+            <column defaultValueNumeric="0" name="update_by" remarks="更新者" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="update_time" remarks="更新时间" type="datetime(0)"/>
+            <column name="remark" remarks="备注" type="VARCHAR(255)"/>
+        </createTable>
+        <createTable remarks="操作日志记录" tableName="sys_oper_log">
+            <column name="oper_id" remarks="日志主键" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueNumeric="1" name="tenant_id" remarks="租户编号" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="" name="title" remarks="模块标题" type="VARCHAR(50)"/>
+            <column defaultValueNumeric="0" name="business_type" remarks="业务类型（0其它 1新增 2修改 3删除）"
+                    type="INT"/>
+            <column defaultValue="" name="method" remarks="方法名称" type="VARCHAR(100)"/>
+            <column defaultValue="" name="request_method" remarks="请求方式" type="VARCHAR(10)"/>
+            <column defaultValueNumeric="0" name="operator_type" remarks="操作类别（0其它 1后台用户 2手机端用户）"
+                    type="INT"/>
+            <column defaultValue="" name="oper_name" remarks="操作人员" type="VARCHAR(50)"/>
+            <column defaultValue="" name="dept_name" remarks="部门名称" type="VARCHAR(50)"/>
+            <column defaultValue="" name="oper_url" remarks="请求URL" type="VARCHAR(255)"/>
+            <column defaultValue="" name="oper_ip" remarks="主机地址" type="VARCHAR(128)"/>
+            <column defaultValue="" name="oper_location" remarks="操作地点" type="VARCHAR(255)"/>
+            <column defaultValue="" name="oper_param" remarks="请求参数" type="VARCHAR(2000)"/>
+            <column defaultValue="" name="json_result" remarks="返回参数" type="VARCHAR(2000)"/>
+            <column defaultValueNumeric="0" name="status" remarks="操作状态（0正常 1异常）" type="INT"/>
+            <column defaultValue="" name="error_msg" remarks="错误消息" type="VARCHAR(2000)"/>
+            <column name="oper_time" remarks="操作时间" type="datetime(0)"/>
+            <column defaultValueNumeric="0" name="cost_time" remarks="消耗时间" type="BIGINT"/>
+        </createTable>
+        <createTable remarks="OSS对象存储表" tableName="sys_oss">
+            <column name="oss_id" remarks="对象存储主键" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueNumeric="1" name="tenant_id" remarks="租户编号" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="" name="file_name" remarks="文件名" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="" name="original_name" remarks="原名" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="" name="file_suffix" remarks="文件后缀名" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="url" remarks="URL地址" type="VARCHAR(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="minio" name="service" remarks="服务商" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="version" remarks="乐观锁" type="INT"/>
+            <column name="create_by" remarks="上传人" type="BIGINT"/>
+            <column name="create_time" remarks="创建时间" type="datetime(0)"/>
+            <column name="update_by" remarks="更新人" type="BIGINT"/>
+            <column name="update_time" remarks="更新时间" type="datetime(0)"/>
+        </createTable>
+        <createTable remarks="对象存储配置表" tableName="sys_oss_config">
+            <column name="oss_config_id" remarks="主建" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueNumeric="1" name="tenant_id" remarks="租户编号" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="" name="config_key" remarks="配置key" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="" name="access_key" remarks="accessKey" type="VARCHAR(255)"/>
+            <column defaultValue="" name="secret_key" remarks="秘钥" type="VARCHAR(255)"/>
+            <column defaultValue="" name="bucket_name" remarks="桶名称" type="VARCHAR(255)"/>
+            <column defaultValue="" name="prefix" remarks="前缀" type="VARCHAR(255)"/>
+            <column defaultValue="" name="endpoint" remarks="访问站点" type="VARCHAR(255)"/>
+            <column defaultValue="" name="domain" remarks="自定义域名" type="VARCHAR(255)"/>
+            <column defaultValue="N" name="is_https" remarks="是否https（Y=是,N=否）" type="CHAR(1)"/>
+            <column defaultValue="" name="region" remarks="域" type="VARCHAR(255)"/>
+            <column defaultValue="1" name="access_policy" remarks="桶权限类型(0=private 1=public 2=custom)"
+                    type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="1" name="status" remarks="是否默认（0=是,1=否）" type="CHAR(1)"/>
+            <column defaultValue="" name="ext1" remarks="扩展字段" type="VARCHAR(255)"/>
+            <column defaultValueNumeric="0" name="version" remarks="乐观锁" type="INT"/>
+            <column name="create_by" remarks="创建者" type="BIGINT"/>
+            <column name="create_time" remarks="创建时间" type="datetime(0)"/>
+            <column name="update_by" remarks="更新者" type="BIGINT"/>
+            <column name="update_time" remarks="更新时间" type="datetime(0)"/>
+            <column name="remark" remarks="备注" type="VARCHAR(500)"/>
+        </createTable>
+        <createTable remarks="岗位信息表" tableName="sys_post">
+            <column name="post_id" remarks="岗位ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueNumeric="1" name="tenant_id" remarks="租户编号" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="post_code" remarks="岗位编码" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="post_name" remarks="岗位名称" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="post_sort" remarks="显示顺序" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" remarks="状态（0正常 1停用）" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="version" remarks="乐观锁" type="INT"/>
+            <column defaultValueNumeric="0" name="create_by" remarks="创建者" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_time" remarks="创建时间" type="datetime(0)"/>
+            <column defaultValueNumeric="0" name="update_by" remarks="更新者" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="update_time" remarks="更新时间" type="datetime(0)"/>
+            <column name="remark" remarks="备注" type="VARCHAR(500)"/>
+        </createTable>
+        <createTable remarks="角色信息表" tableName="sys_role">
+            <column name="role_id" remarks="角色ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueNumeric="1" name="tenant_id" remarks="租户编号" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_name" remarks="角色名称" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_key" remarks="角色权限字符串" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_sort" remarks="显示顺序" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="1" name="data_scope"
+                    remarks="数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）"
+                    type="CHAR(1)"/>
+            <column defaultValueNumeric="1" name="menu_check_strictly" remarks="菜单树选择项是否关联显示"
+                    type="BIT(1)"/>
+            <column defaultValueNumeric="1" name="dept_check_strictly" remarks="部门树选择项是否关联显示"
+                    type="BIT(1)"/>
+            <column name="status" remarks="角色状态（0正常 1停用）" type="CHAR(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueNumeric="0" name="version" remarks="乐观锁" type="INT"/>
+            <column defaultValueNumeric="0" name="del_flag" remarks="删除标志（0代表存在 1代表删除）" type="SMALLINT"/>
+            <column defaultValueNumeric="0" name="create_by" remarks="创建者" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_time" remarks="创建时间" type="datetime(0)"/>
+            <column defaultValueNumeric="0" name="update_by" remarks="更新者" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="update_time" remarks="更新时间" type="datetime(0)"/>
+            <column name="remark" remarks="备注" type="VARCHAR(500)"/>
+        </createTable>
+        <createTable remarks="角色和部门关联表" tableName="sys_role_dept">
+            <column name="role_id" remarks="角色ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="dept_id" remarks="部门ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+        <createTable remarks="角色和菜单关联表" tableName="sys_role_menu">
+            <column name="role_id" remarks="角色ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="menu_id" remarks="菜单ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+        <createTable remarks="社会化关系表" tableName="sys_social">
+            <column name="social_id" remarks="主键" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="user_id" remarks="用户ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tenant_id" remarks="租户id" type="VARCHAR(20)"/>
+            <column name="auth_id" remarks="平台+平台唯一id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="source" remarks="用户来源" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="open_id" remarks="平台编号唯一id" type="VARCHAR(255)"/>
+            <column name="user_name" remarks="登录账号" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="" name="nick_name" remarks="用户昵称" type="VARCHAR(30)"/>
+            <column defaultValue="" name="email" remarks="用户邮箱" type="VARCHAR(255)"/>
+            <column defaultValue="" name="avatar" remarks="头像地址" type="VARCHAR(500)"/>
+            <column name="access_token" remarks="用户的授权令牌" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expire_in" remarks="用户的授权令牌的有效期，部分平台可能没有" type="INT"/>
+            <column name="refresh_token" remarks="刷新令牌，部分平台可能没有" type="VARCHAR(255)"/>
+            <column name="access_code" remarks="平台的授权信息，部分平台可能没有" type="VARCHAR(255)"/>
+            <column name="union_id" remarks="用户的 unionid" type="VARCHAR(255)"/>
+            <column name="scope" remarks="授予的权限，部分平台可能没有" type="VARCHAR(255)"/>
+            <column name="token_type" remarks="个别平台的授权信息，部分平台可能没有" type="VARCHAR(255)"/>
+            <column name="id_token" remarks="id token，部分平台可能没有" type="VARCHAR(2000)"/>
+            <column name="mac_algorithm" remarks="小米平台用户的附带属性，部分平台可能没有" type="VARCHAR(255)"/>
+            <column name="mac_key" remarks="小米平台用户的附带属性，部分平台可能没有" type="VARCHAR(255)"/>
+            <column name="code" remarks="用户的授权code，部分平台可能没有" type="VARCHAR(255)"/>
+            <column name="oauth_token" remarks="Twitter平台用户的附带属性，部分平台可能没有" type="VARCHAR(255)"/>
+            <column name="oauth_token_secret" remarks="Twitter平台用户的附带属性，部分平台可能没有" type="VARCHAR(255)"/>
+            <column defaultValueNumeric="0" name="version" remarks="乐观锁" type="INT"/>
+            <column defaultValueNumeric="0" name="del_flag" remarks="删除标志（0代表存在 1代表删除）" type="SMALLINT"/>
+            <column name="create_by" remarks="创建者" type="BIGINT"/>
+            <column name="create_time" remarks="创建时间" type="datetime(0)"/>
+            <column name="update_by" remarks="更新者" type="BIGINT"/>
+            <column name="update_time" remarks="更新时间" type="datetime(0)"/>
+        </createTable>
+        <createTable remarks="租户表" tableName="sys_tenant">
+            <column name="tenant_id" remarks="租户编号" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="contact_user_name" remarks="联系人" type="VARCHAR(20)"/>
+            <column name="contact_phone" remarks="联系电话" type="VARCHAR(20)"/>
+            <column name="company_name" remarks="企业名称" type="VARCHAR(50)"/>
+            <column name="license_number" remarks="统一社会信用代码" type="VARCHAR(30)"/>
+            <column name="address" remarks="地址" type="VARCHAR(200)"/>
+            <column name="intro" remarks="企业简介" type="VARCHAR(200)"/>
+            <column name="domain" remarks="域名" type="VARCHAR(200)"/>
+            <column name="remark" remarks="备注" type="VARCHAR(200)"/>
+            <column name="package_id" remarks="租户套餐编号" type="BIGINT"/>
+            <column name="expire_time" remarks="过期时间" type="datetime(0)"/>
+            <column defaultValueNumeric="-1" name="account_count" remarks="用户数量（-1不限制）" type="INT"/>
+            <column defaultValueNumeric="0" name="version" remarks="乐观锁" type="INT"/>
+            <column defaultValue="0" name="status" remarks="租户状态（0正常 1停用）" type="CHAR(1)"/>
+            <column name="del_flag" remarks="删除标志（0代表存在 1代表删除）" type="SMALLINT"/>
+            <column name="create_by" remarks="创建者" type="BIGINT"/>
+            <column name="create_time" remarks="创建时间" type="datetime(0)"/>
+            <column name="update_by" remarks="更新者" type="BIGINT"/>
+            <column name="update_time" remarks="更新时间" type="datetime(0)"/>
+        </createTable>
+        <createTable remarks="租户套餐表" tableName="sys_tenant_package">
+            <column name="package_id" remarks="租户套餐id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="package_name" remarks="套餐名称" type="VARCHAR(20)"/>
+            <column name="menu_ids" remarks="关联菜单id" type="VARCHAR(3000)"/>
+            <column name="remark" remarks="备注" type="VARCHAR(200)"/>
+            <column defaultValueNumeric="1" name="menu_check_strictly" remarks="菜单树选择项是否关联显示"
+                    type="BIT(1)"/>
+            <column defaultValue="0" name="status" remarks="状态（0正常 1停用）" type="CHAR(1)"/>
+            <column defaultValueNumeric="0" name="version" remarks="乐观锁" type="INT"/>
+            <column name="del_flag" remarks="删除标志（0代表存在 1代表删除）" type="SMALLINT"/>
+            <column name="create_by" remarks="创建者" type="BIGINT"/>
+            <column name="create_time" remarks="创建时间" type="datetime(0)"/>
+            <column name="update_by" remarks="更新者" type="BIGINT"/>
+            <column name="update_time" remarks="更新时间" type="datetime(0)"/>
+        </createTable>
+        <createTable remarks="用户信息表" tableName="sys_user">
+            <column name="user_id" remarks="用户ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueNumeric="1" name="tenant_id" remarks="租户主键" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dept_id" remarks="部门ID" type="BIGINT"/>
+            <column name="user_name" remarks="用户账号" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nick_name" remarks="用户昵称" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="sys_user" name="user_type" remarks="用户类型（sys_user系统用户、app_user App用户）"
+                    type="VARCHAR(10)"/>
+            <column defaultValue="" name="email" remarks="用户邮箱" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="" name="phonenumber" remarks="手机号码" type="VARCHAR(11)"/>
+            <column defaultValue="0" name="gender" remarks="用户性别（0男 1女 2未知）" type="CHAR(1)"/>
+            <column name="avatar" remarks="头像地址" type="BIGINT"/>
+            <column defaultValue="" name="password" remarks="密码" type="VARCHAR(100)"/>
+            <column defaultValue="0" name="status" remarks="帐号状态（0正常 1停用）" type="CHAR(1)"/>
+            <column defaultValueNumeric="0" name="version" remarks="乐观锁" type="INT"/>
+            <column defaultValueNumeric="0" name="del_flag" remarks="删除标志（0代表存在 1代表删除）" type="SMALLINT"/>
+            <column defaultValue="" name="login_ip" remarks="最后登录IP" type="VARCHAR(128)"/>
+            <column name="login_date" remarks="最后登录时间" type="datetime(0)"/>
+            <column defaultValueNumeric="0" name="create_by" remarks="创建者" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_time" remarks="创建时间" type="datetime(0)"/>
+            <column defaultValueNumeric="0" name="update_by" remarks="更新者" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="update_time" remarks="更新时间" type="datetime(0)"/>
+            <column name="remark" remarks="备注" type="VARCHAR(500)"/>
+        </createTable>
+        <createTable remarks="用户与岗位关联表" tableName="sys_user_post">
+            <column name="user_id" remarks="用户ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="post_id" remarks="岗位ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+        <createTable remarks="用户和角色关联表" tableName="sys_user_role">
+            <column name="user_id" remarks="用户ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="role_id" remarks="角色ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint columnNames="tenant_id, dict_type" constraintName="dict_type_unq_idx"
+                             tableName="sys_dict_type"/>
+
+        <addUniqueConstraint columnNames="tenant_id, user_name" constraintName="sys_user_unqindex_tenant_username"
+                             tableName="sys_user"/>
+
+        <createIndex associatedWith="" indexName="idx_sys_logininfor_lt" tableName="sys_logininfor">
+            <column name="login_time"/>
+        </createIndex>
+        <createIndex associatedWith="" indexName="idx_sys_logininfor_s" tableName="sys_logininfor">
+            <column name="status"/>
+        </createIndex>
+        <createIndex associatedWith="" indexName="idx_sys_oper_log_bt" tableName="sys_oper_log">
+            <column defaultValueNumeric="0" name="business_type"/>
+        </createIndex>
+        <createIndex associatedWith="" indexName="idx_sys_oper_log_ot" tableName="sys_oper_log">
+            <column name="oper_time"/>
+        </createIndex>
+        <createIndex associatedWith="" indexName="idx_sys_oper_log_s" tableName="sys_oper_log">
+            <column defaultValueNumeric="0" name="status"/>
+        </createIndex>
+
+
+    </changeSet>
+
+    <changeSet id="1747555580318-2" author="xujie (generated)">
+        <sql dbms="mysql">
+            -- region sys_client 初始数据
+            INSERT INTO `sys_client` (`id`, `client_id`, `client_key`, `client_secret`, `grant_type`, `device_type`,
+                                      `active_timeout`, `timeout`, `status`, `version`, `del_flag`, `create_dept`,
+                                      `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
+            VALUES (1, 'e5cd7e4891bf95d1d19206ce24a7b32e', 'pc', 'pc123', 'password,social', 'pc', 1800, 604800, '0', 2,
+                    0, 103, 1, '2023-08-10 17:01:52', 1, '2024-01-07 19:02:50', NULL),
+                   (2, '428a8310cd442757ae699df5d894f051', 'app', 'app123', 'password,sms,social', 'android', 1800,
+                    604800, '1', 1, 0, 103, 1, '2023-08-10 17:01:52', 1, '2024-01-07 19:36:27', NULL);
+            -- endregion
+
+            -- region sys_config 初始数据
+            INSERT INTO `sys_config` (`config_id`, `tenant_id`, `config_name`, `config_key`, `config_value`,
+                                      `config_type`, `version`, `create_by`, `create_time`, `update_by`, `update_time`,
+                                      `remark`)
+            VALUES (1, 1, '主框架页-默认皮肤样式', 'sys.index.skinName', 'skin-blue', 'Y', 0, 1, '2023-06-03 21:32:30',
+                    1, '2023-09-12 17:56:29',
+                    '蓝色 skin-blue、绿色 skin-green、紫色 skin-purple、红色 skin-red、黄色 skin-yellow'),
+                   (2, 1, '用户管理-账号初始密码', 'sys.user.initPassword', '12345678', 'Y', 0, 1,
+                    '2023-06-03 21:32:30', 1, '2023-10-16 16:42:05', '初始化密码 12345678'),
+                   (3, 1, '主框架页-侧边栏主题', 'sys.index.sideTheme', 'theme-dark', 'Y', 0, 1, '2023-06-03 21:32:30',
+                    1, NULL, '深色主题theme-dark，浅色主题theme-light'),
+                   (5, 1, '账号自助-是否开启用户注册功能', 'sys.account.registerUser', 'false', 'N', 0, 1,
+                    '2023-06-03 21:32:30', 1, '2023-09-13 17:16:25', '是否开启注册用户功能（true开启，false关闭）'),
+                   (6, 1, 'OSS预览列表资源开关', 'sys.oss.previewListResource', 'true', 'Y', 0, 1,
+                    '2023-09-30 21:55:15', 1, '2023-12-10 19:49:53', 'true:开启, false:关闭');
+            -- endregion
+
+            -- region sys_dept 初始数据
+            INSERT INTO `sys_dept` (`dept_id`, `tenant_id`, `parent_id`, `ancestors`, `dept_name`, `order_num`,
+                                    `leader`, `phone`, `email`, `status`, `version`, `del_flag`, `create_by`,
+                                    `create_time`, `update_by`, `update_time`)
+            VALUES (1, 1, 0, '0', 'Ruoyi-Flex公司', 0, 'ruoyi-flex', '18888888888', 'dataprince@foxmail.com', '0', 0, 0,
+                    1, '2023-06-03 21:32:28', 1, '2024-01-07 21:44:45');
+            -- endregion
+
+            -- region 字典初始数据
+            INSERT INTO `sys_dict_data` (`dict_code`, `tenant_id`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`,
+                                         `css_class`, `list_class`, `is_default`, `version`, `create_by`, `create_time`,
+                                         `update_by`, `update_time`, `remark`)
+            VALUES (1, 1, 1, '男', '0', 'sys_user_gender', '', '', 'Y', 0, 1, '2023-06-03 21:32:30', 1,
+                    '2023-09-20 09:53:27', '性别男'),
+                   (2, 1, 2, '女', '1', 'sys_user_gender', '', '', 'N', 0, 1, '2023-06-03 21:32:30', 1,
+                    '2023-09-20 09:53:27', '性别女'),
+                   (3, 1, 3, '未知', '2', 'sys_user_gender', '', '', 'N', 0, 1, '2023-06-03 21:32:30', 1,
+                    '2023-09-20 09:53:27', '性别未知'),
+                   (4, 1, 1, '显示', '0', 'sys_show_hide', '', 'primary', 'Y', 0, 1, '2023-06-03 21:32:30', 1, NULL,
+                    '显示菜单'),
+                   (5, 1, 2, '隐藏', '1', 'sys_show_hide', '', 'danger', 'N', 0, 1, '2023-06-03 21:32:30', 1, NULL,
+                    '隐藏菜单'),
+                   (6, 1, 1, '正常', '0', 'sys_normal_disable', '', 'primary', 'Y', 0, 1, '2023-06-03 21:32:30', 1,
+                    NULL, '正常状态'),
+                   (7, 1, 2, '停用', '1', 'sys_normal_disable', '', 'danger', 'N', 0, 1, '2023-06-03 21:32:30', 1, NULL,
+                    '停用状态'),
+                   (8, 1, 1, '正常', '0', 'sys_job_status', '', 'primary', 'Y', 0, 1, '2023-06-03 21:32:30', 1, NULL,
+                    '正常状态'),
+                   (9, 1, 2, '暂停', '1', 'sys_job_status', '', 'danger', 'N', 0, 1, '2023-06-03 21:32:30', 1, NULL,
+                    '停用状态'),
+                   (10, 1, 1, '默认', 'DEFAULT', 'sys_job_group', '', '', 'Y', 0, 1, '2023-06-03 21:32:30', 1, NULL,
+                    '默认分组'),
+                   (11, 1, 2, '系统', 'SYSTEM', 'sys_job_group', '', '', 'N', 0, 1, '2023-06-03 21:32:30', 1, NULL,
+                    '系统分组'),
+                   (12, 1, 1, '是', 'Y', 'sys_yes_no', '', 'primary', 'Y', 0, 1, '2023-06-03 21:32:30', 1, NULL,
+                    '系统默认是'),
+                   (13, 1, 2, '否', 'N', 'sys_yes_no', '', 'danger', 'N', 0, 1, '2023-06-03 21:32:30', 1, NULL,
+                    '系统默认否'),
+                   (14, 1, 1, '通知', '1', 'sys_notice_type', '', 'warning', 'Y', 0, 1, '2023-06-03 21:32:30', 1, NULL,
+                    '通知'),
+                   (15, 1, 2, '公告', '2', 'sys_notice_type', '', 'success', 'N', 0, 1, '2023-06-03 21:32:30', 1, NULL,
+                    '公告'),
+                   (16, 1, 1, '正常', '0', 'sys_notice_status', '', 'primary', 'Y', 0, 1, '2023-06-03 21:32:30', 1,
+                    NULL, '正常状态'),
+                   (17, 1, 2, '关闭', '1', 'sys_notice_status', '', 'danger', 'N', 0, 1, '2023-06-03 21:32:30', 1, NULL,
+                    '关闭状态'),
+                   (18, 1, 99, '其他', '0', 'sys_oper_type', '', 'info', 'N', 0, 1, '2023-06-03 21:32:30', 1, NULL,
+                    '其他操作'),
+                   (19, 1, 1, '新增', '1', 'sys_oper_type', '', 'info', 'N', 0, 1, '2023-06-03 21:32:30', 1, NULL,
+                    '新增操作'),
+                   (20, 1, 2, '修改', '2', 'sys_oper_type', '', 'info', 'N', 0, 1, '2023-06-03 21:32:30', 1, NULL,
+                    '修改操作'),
+                   (21, 1, 3, '删除', '3', 'sys_oper_type', '', 'danger', 'N', 0, 1, '2023-06-03 21:32:30', 1, NULL,
+                    '删除操作'),
+                   (22, 1, 4, '授权', '4', 'sys_oper_type', '', 'primary', 'N', 0, 1, '2023-06-03 21:32:30', 1, NULL,
+                    '授权操作'),
+                   (23, 1, 5, '导出', '5', 'sys_oper_type', '', 'warning', 'N', 0, 1, '2023-06-03 21:32:30', 1, NULL,
+                    '导出操作'),
+                   (24, 1, 6, '导入', '6', 'sys_oper_type', '', 'warning', 'N', 0, 1, '2023-06-03 21:32:30', 1, NULL,
+                    '导入操作'),
+                   (25, 1, 7, '强退', '7', 'sys_oper_type', '', 'danger', 'N', 0, 1, '2023-06-03 21:32:30', 1, NULL,
+                    '强退操作'),
+                   (26, 1, 8, '生成代码', '8', 'sys_oper_type', '', 'warning', 'N', 0, 1, '2023-06-03 21:32:30', 1,
+                    NULL, '生成操作'),
+                   (27, 1, 9, '清空数据', '9', 'sys_oper_type', '', 'danger', 'N', 0, 1, '2023-06-03 21:32:30', 1, NULL,
+                    '清空操作'),
+                   (28, 1, 1, '成功', '0', 'sys_common_status', '', 'primary', 'N', 0, 1, '2023-06-03 21:32:30', 1,
+                    NULL, '正常状态'),
+                   (29, 1, 2, '失败', '1', 'sys_common_status', '', 'danger', 'N', 0, 1, '2023-06-03 21:32:30', 1, NULL,
+                    '停用状态'),
+                   (30, 1, 1, '密码认证', 'password', 'sys_grant_type', 'el-check-tag', 'default', 'N', 0, 1,
+                    '2023-10-21 11:10:51', 1, '2023-10-21 11:10:51', '密码认证'),
+                   (31, 1, 2, '短信认证', 'sms', 'sys_grant_type', 'el-check-tag', 'default', 'N', 0, 1,
+                    '2023-10-21 11:10:51', 1, '2023-10-21 11:10:51', '短信认证'),
+                   (32, 1, 3, '邮件认证', 'email', 'sys_grant_type', 'el-check-tag', 'default', 'N', 0, 1,
+                    '2023-10-21 11:10:51', 1, '2023-10-21 11:10:51', '邮件认证'),
+                   (33, 1, 4, '小程序认证', 'xcx', 'sys_grant_type', 'el-check-tag', 'default', 'N', 0, 1,
+                    '2023-10-21 11:10:51', 1, '2023-10-21 11:10:51', '小程序认证'),
+                   (34, 1, 5, '三方登录认证', 'social', 'sys_grant_type', 'el-check-tag', 'default', 'N', 0, 1,
+                    '2023-10-21 11:10:51', 1, '2023-10-21 11:10:51', '三方登录认证'),
+                   (35, 1, 1, 'PC', 'pc', 'sys_device_type', '', 'default', 'N', 0, 1, '2023-10-21 11:41:10', 1,
+                    '2023-10-21 11:41:10', 'PC'),
+                   (36, 1, 2, '安卓', 'android', 'sys_device_type', '', 'default', 'N', 0, 1, '2023-10-21 11:41:10', 1,
+                    '2023-10-21 11:41:10', '安卓'),
+                   (37, 1, 3, 'iOS', 'ios', 'sys_device_type', '', 'default', 'N', 0, 1, '2023-10-21 11:41:10', 1,
+                    '2023-10-21 11:41:10', 'iOS'),
+                   (38, 1, 4, '小程序', 'xcx', 'sys_device_type', '', 'default', 'N', 0, 1, '2023-10-21 11:41:10', 1,
+                    '2023-10-21 11:41:10', '小程序'),
+                   (100, 1, 0, '正常', '0', 'sys_student_status', NULL, 'primary', 'N', 0, 1, '2023-06-03 21:53:50', 1,
+                    '2023-06-03 21:55:24', NULL),
+                   (101, 1, 0, '停用', '1', 'sys_student_status', NULL, 'danger', 'N', 0, 1, '2023-06-03 21:54:11', 1,
+                    '2023-06-03 21:55:31', NULL),
+                   (102, 1, 0, '代码', '0', 'sys_student_hobby', NULL, 'primary', 'N', 0, 1, '2023-06-04 16:40:02', 1,
+                    NULL, NULL),
+                   (103, 1, 0, '音乐', '1', 'sys_student_hobby', NULL, 'success', 'N', 0, 1, '2023-06-04 16:40:24', 1,
+                    NULL, NULL),
+                   (104, 1, 0, '电影', '2', 'sys_student_hobby', NULL, 'warning', 'N', 0, 1, '2023-06-04 16:40:40', 1,
+                    '2023-06-04 16:40:49', NULL),
+                   (105, 1, 0, '计算机', '1', 'sys_goods_type', NULL, 'primary', 'N', 0, 1, '2023-06-05 07:23:48', 1,
+                    NULL, NULL),
+                   (106, 1, 0, '打印设备', '2', 'sys_goods_type', NULL, 'success', 'N', 0, 1, '2023-06-05 07:24:14', 1,
+                    NULL, NULL),
+                   (107, 1, 3, '衣服', '3', 'sys_goods_type', NULL, 'info', 'N', 0, 1, '2023-06-05 07:24:35', 1, NULL,
+                    NULL),
+                   (111, 1, 4, '网络设备', '4', 'sys_goods_type', NULL, 'default', NULL, 0, 1, '2023-09-19 17:31:46', 1,
+                    '2023-09-19 17:31:46', NULL),
+                   (65923231885905920, 1, 1, '桌面微机', 'PC', 'sys_app_type', NULL, 'default', 'N', 4, 1,
+                    '2023-10-01 10:56:23', 1, '2024-01-07 20:11:33', ''),
+                   (65923379802230784, 1, 2, '平板', 'pad', 'sys_app_type', NULL, 'default', 'N', 0, 1,
+                    '2023-10-01 10:56:59', 1, '2023-10-01 10:56:59', NULL),
+                   (65923470604718080, 1, 3, '手机', 'phone', 'sys_app_type', NULL, 'default', 'N', 0, 1,
+                    '2023-10-01 10:57:20', 1, '2023-10-01 10:57:20', NULL)
+            ;
+            INSERT INTO `sys_dict_type` (`dict_id`, `tenant_id`, `dict_name`, `dict_type`, `version`, `create_by`,
+                                         `create_time`, `update_by`, `update_time`, `remark`)
+            VALUES (1, 1, '用户性别', 'sys_user_gender', 0, 1, '2023-06-03 21:32:30', 1, '2023-09-20 09:53:27',
+                    '用户性别列表'),
+                   (2, 1, '菜单状态', 'sys_show_hide', 0, 1, '2023-06-03 21:32:30', 1, NULL, '菜单状态列表'),
+                   (3, 1, '系统开关', 'sys_normal_disable', 0, 1, '2023-06-03 21:32:30', 1, NULL, '系统开关列表'),
+                   (4, 1, '任务状态', 'sys_job_status', 0, 1, '2023-06-03 21:32:30', 1, NULL, '任务状态列表'),
+                   (5, 1, '任务分组', 'sys_job_group', 0, 1, '2023-06-03 21:32:30', 1, NULL, '任务分组列表'),
+                   (6, 1, '系统是否', 'sys_yes_no', 0, 1, '2023-06-03 21:32:30', 1, NULL, '系统是否列表'),
+                   (7, 1, '通知类型', 'sys_notice_type', 0, 1, '2023-06-03 21:32:30', 1, NULL, '通知类型列表'),
+                   (8, 1, '通知状态', 'sys_notice_status', 0, 1, '2023-06-03 21:32:30', 1, NULL, '通知状态列表'),
+                   (9, 1, '操作类型', 'sys_oper_type', 0, 1, '2023-06-03 21:32:30', 1, NULL, '操作类型列表'),
+                   (10, 1, '系统状态', 'sys_common_status', 0, 1, '2023-06-03 21:32:30', 1, NULL, '登录状态列表'),
+                   (11, 1, '授权类型', 'sys_grant_type', 0, 1, '2023-10-21 11:06:33', 1, '2023-10-21 11:06:33',
+                    '认证授权类型'),
+                   (12, 1, '设备类型', 'sys_device_type', 0, 1, '2023-10-21 11:38:41', 1, '2023-10-21 11:38:41',
+                    '客户端设备类型'),
+                   (100, 1, '学生状态', 'sys_student_status', 0, 1, '2023-06-03 21:52:47', 1, '2023-06-03 21:53:09',
+                    NULL),
+                   (101, 1, '爱好', 'sys_student_hobby', 0, 1, '2023-06-04 16:39:16', 1, NULL, NULL),
+                   (102, 1, '商品种类', 'sys_goods_type', 0, 1, '2023-06-05 07:23:20', 1, NULL, NULL),
+                   (65922863223361536, 1, '系统类型', 'sys_app_type', 4, 1, '2023-10-01 10:54:55', 1,
+                    '2024-01-07 20:12:00', '系统类型列表');
+
+            -- endregion
+
+            -- region sys_menu 数据
+            INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`,
+                                    `query_param`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`,
+                                    `icon`, `version`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
+            VALUES (1, '系统管理', 0, 1, 'system', NULL, '', 1, 0, 'M', '0', '0', '', 'system', 0, 1,
+                    '2023-06-03 21:32:28', 1, NULL, '系统管理目录'),
+                   (2, '系统监控', 0, 2, 'monitor', NULL, '', 1, 0, 'M', '0', '0', '', 'monitor', 0, 1,
+                    '2023-06-03 21:32:28', 1, NULL, '系统监控目录'),
+                   (3, '系统工具', 0, 4, 'tool', NULL, '', 1, 0, 'M', '0', '0', '', 'tool', 1, 1, '2023-06-03 21:32:28',
+                    1, '2024-01-07 21:47:00', '系统工具目录'),
+                   (4, '官方网站', 0, 99, 'https://gitee.com/dataprince/ruoyi-flex', NULL, '', 0, 0, 'M', '0', '0', '',
+                    'guide', 1, 1, '2023-06-03 21:32:28', 1, '2024-01-07 21:47:26', '若依官网地址'),
+                   (6, '租户管理', 0, 3, 'tenant', NULL, '', 1, 0, 'M', '0', '0', '', 'chart', 1, 1,
+                    '2024-01-03 20:11:18', 1, '2024-01-07 21:45:55', '租户管理目录'),
+                   (100, '用户管理', 1, 1, 'user', 'system/user/index', '', 1, 0, 'C', '0', '0', 'system:user:list',
+                    'user', 0, 1, '2023-06-03 21:32:28', 1, NULL, '用户管理菜单'),
+                   (101, '角色管理', 1, 2, 'role', 'system/role/index', '', 1, 0, 'C', '0', '0', 'system:role:list',
+                    'peoples', 0, 1, '2023-06-03 21:32:28', 1, NULL, '角色管理菜单'),
+                   (102, '菜单管理', 1, 3, 'menu', 'system/menu/index', '', 1, 0, 'C', '0', '0', 'system:menu:list',
+                    'tree-table', 0, 1, '2023-06-03 21:32:28', 1, NULL, '菜单管理菜单'),
+                   (103, '部门管理', 1, 4, 'dept', 'system/dept/index', '', 1, 0, 'C', '0', '0', 'system:dept:list',
+                    'tree', 0, 1, '2023-06-03 21:32:28', 1, NULL, '部门管理菜单'),
+                   (104, '岗位管理', 1, 5, 'post', 'system/post/index', '', 1, 0, 'C', '0', '0', 'system:post:list',
+                    'post', 0, 1, '2023-06-03 21:32:28', 1, NULL, '岗位管理菜单'),
+                   (105, '字典管理', 1, 6, 'dict', 'system/dict/index', '', 1, 0, 'C', '0', '0', 'system:dict:list',
+                    'dict', 0, 1, '2023-06-03 21:32:28', 1, NULL, '字典管理菜单'),
+                   (106, '参数设置', 1, 7, 'config', 'system/config/index', '', 1, 0, 'C', '0', '0',
+                    'system:config:list', 'edit', 0, 1, '2023-06-03 21:32:28', 1, NULL, '参数设置菜单'),
+                   (107, '通知公告', 1, 8, 'notice', 'system/notice/index', '', 1, 0, 'C', '0', '0',
+                    'system:notice:list', 'message', 0, 1, '2023-06-03 21:32:28', 1, NULL, '通知公告菜单'),
+                   (108, '日志管理', 1, 9, 'log', '', '', 1, 0, 'M', '0', '0', '', 'log', 0, 1, '2023-06-03 21:32:28',
+                    1, NULL, '日志管理菜单'),
+                   (109, '在线用户', 2, 1, 'online', 'monitor/online/index', '', 1, 0, 'C', '0', '0',
+                    'monitor:online:list', 'online', 0, 1, '2023-06-03 21:32:28', 1, NULL, '在线用户菜单'),
+                   (110, '任务调度', 2, 2, 'powerjob', 'monitor/powerjob/index', '', 1, 0, 'C', '0', '0',
+                    'monitor:powerjob:list', 'job', 0, 1, '2023-06-03 21:32:28', 1, NULL, '定时任务菜单'),
+                   (112, '服务监控', 2, 4, 'admin', 'monitor/admin/index', '', 1, 0, 'C', '0', '0',
+                    'monitor:admin:list', 'server', 0, 1, '2023-06-03 21:32:28', 1, NULL, '服务监控菜单'),
+                   (113, '缓存监控', 2, 5, 'cache', 'monitor/cache/index', '', 1, 0, 'C', '0', '0',
+                    'monitor:cache:list', 'redis', 0, 1, '2023-06-03 21:32:28', 1, NULL, '缓存监控菜单'),
+                   (115, '表单构建', 3, 1, 'build', 'tool/build/index', '', 1, 0, 'C', '0', '0', 'tool:build:list',
+                    'build', 0, 1, '2023-06-03 21:32:28', 1, NULL, '表单构建菜单'),
+                   (116, '代码生成', 3, 2, 'gen', 'tool/gen/index', '', 1, 0, 'C', '0', '0', 'tool:gen:list', 'code', 0,
+                    1, '2023-06-03 21:32:28', 1, NULL, '代码生成菜单'),
+                   (117, '系统接口', 3, 3, 'http://localhost:8080/swagger-ui/index.html', '', '', 0, 0, 'M', '0', '0',
+                    'tool:swagger:list', 'swagger', 0, 1, '2023-06-03 21:32:29', 1, '2023-07-28 21:09:07',
+                    '系统接口菜单'),
+                   (118, '文件管理', 1, 10, 'oss', 'system/oss/index', '', 1, 0, 'C', '0', '0', 'system:oss:list',
+                    'upload', 0, 1, '2023-12-03 08:46:11', 1, '2023-12-03 08:46:11', '文件管理菜单'),
+                   (121, '租户管理', 6, 1, 'tenantMenu', 'system/tenant/index', '', 1, 0, 'C', '0', '0',
+                    'system:tenant:list', 'list', 0, 1, '2024-01-03 20:11:18', NULL, NULL, '租户管理菜单'),
+                   (122, '租户套餐管理', 6, 2, 'tenantPackage', 'system/tenantPackage/index', '', 1, 0, 'C', '0', '0',
+                    'system:tenantPackage:list', 'form', 0, 1, '2024-01-03 20:11:18', NULL, NULL, '租户套餐管理菜单'),
+                   (123, '客户端管理', 1, 11, 'client', 'system/client/index', '', 1, 0, 'C', '0', '0',
+                    'system:client:list', 'international', 0, 1, '2024-01-03 21:29:43', NULL, NULL, '客户端管理菜单'),
+                   (500, '操作日志', 108, 1, 'operlog', 'monitor/operlog/index', '', 1, 0, 'C', '0', '0',
+                    'monitor:operlog:list', 'form', 0, 1, '2023-06-03 21:32:29', 1, NULL, '操作日志菜单'),
+                   (501, '登录日志', 108, 2, 'logininfor', 'monitor/logininfor/index', '', 1, 0, 'C', '0', '0',
+                    'monitor:logininfor:list', 'logininfor', 0, 1, '2023-06-03 21:32:29', 1, NULL, '登录日志菜单'),
+                   (1000, '用户查询', 100, 1, '', '', '', 1, 0, 'F', '0', '0', 'system:user:query', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1001, '用户新增', 100, 2, '', '', '', 1, 0, 'F', '0', '0', 'system:user:add', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1002, '用户修改', 100, 3, '', '', '', 1, 0, 'F', '0', '0', 'system:user:edit', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1003, '用户删除', 100, 4, '', '', '', 1, 0, 'F', '0', '0', 'system:user:remove', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1004, '用户导出', 100, 5, '', '', '', 1, 0, 'F', '0', '0', 'system:user:export', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1005, '用户导入', 100, 6, '', '', '', 1, 0, 'F', '0', '0', 'system:user:import', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1006, '重置密码', 100, 7, '', '', '', 1, 0, 'F', '0', '0', 'system:user:resetPwd', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1007, '角色查询', 101, 1, '', '', '', 1, 0, 'F', '0', '0', 'system:role:query', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1008, '角色新增', 101, 2, '', '', '', 1, 0, 'F', '0', '0', 'system:role:add', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1009, '角色修改', 101, 3, '', '', '', 1, 0, 'F', '0', '0', 'system:role:edit', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1010, '角色删除', 101, 4, '', '', '', 1, 0, 'F', '0', '0', 'system:role:remove', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1011, '角色导出', 101, 5, '', '', '', 1, 0, 'F', '0', '0', 'system:role:export', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1012, '菜单查询', 102, 1, '', '', '', 1, 0, 'F', '0', '0', 'system:menu:query', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1013, '菜单新增', 102, 2, '', '', '', 1, 0, 'F', '0', '0', 'system:menu:add', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1014, '菜单修改', 102, 3, '', '', '', 1, 0, 'F', '0', '0', 'system:menu:edit', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1015, '菜单删除', 102, 4, '', '', '', 1, 0, 'F', '0', '0', 'system:menu:remove', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1016, '部门查询', 103, 1, '', '', '', 1, 0, 'F', '0', '0', 'system:dept:query', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1017, '部门新增', 103, 2, '', '', '', 1, 0, 'F', '0', '0', 'system:dept:add', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1018, '部门修改', 103, 3, '', '', '', 1, 0, 'F', '0', '0', 'system:dept:edit', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1019, '部门删除', 103, 4, '', '', '', 1, 0, 'F', '0', '0', 'system:dept:remove', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1020, '岗位查询', 104, 1, '', '', '', 1, 0, 'F', '0', '0', 'system:post:query', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1021, '岗位新增', 104, 2, '', '', '', 1, 0, 'F', '0', '0', 'system:post:add', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1022, '岗位修改', 104, 3, '', '', '', 1, 0, 'F', '0', '0', 'system:post:edit', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1023, '岗位删除', 104, 4, '', '', '', 1, 0, 'F', '0', '0', 'system:post:remove', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1024, '岗位导出', 104, 5, '', '', '', 1, 0, 'F', '0', '0', 'system:post:export', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1025, '字典查询', 105, 1, '#', '', '', 1, 0, 'F', '0', '0', 'system:dict:query', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1026, '字典新增', 105, 2, '#', '', '', 1, 0, 'F', '0', '0', 'system:dict:add', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1027, '字典修改', 105, 3, '#', '', '', 1, 0, 'F', '0', '0', 'system:dict:edit', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1028, '字典删除', 105, 4, '#', '', '', 1, 0, 'F', '0', '0', 'system:dict:remove', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1029, '字典导出', 105, 5, '#', '', '', 1, 0, 'F', '0', '0', 'system:dict:export', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1030, '参数查询', 106, 1, '#', '', '', 1, 0, 'F', '0', '0', 'system:config:query', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1031, '参数新增', 106, 2, '#', '', '', 1, 0, 'F', '0', '0', 'system:config:add', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1032, '参数修改', 106, 3, '#', '', '', 1, 0, 'F', '0', '0', 'system:config:edit', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1033, '参数删除', 106, 4, '#', '', '', 1, 0, 'F', '0', '0', 'system:config:remove', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1034, '参数导出', 106, 5, '#', '', '', 1, 0, 'F', '0', '0', 'system:config:export', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1035, '公告查询', 107, 1, '#', '', '', 1, 0, 'F', '0', '0', 'system:notice:query', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1036, '公告新增', 107, 2, '#', '', '', 1, 0, 'F', '0', '0', 'system:notice:add', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1037, '公告修改', 107, 3, '#', '', '', 1, 0, 'F', '0', '0', 'system:notice:edit', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1038, '公告删除', 107, 4, '#', '', '', 1, 0, 'F', '0', '0', 'system:notice:remove', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1039, '操作查询', 500, 1, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:operlog:query', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1040, '操作删除', 500, 2, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:operlog:remove', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1041, '日志导出', 500, 3, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:operlog:export', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1042, '登录查询', 501, 1, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:logininfor:query', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1043, '登录删除', 501, 2, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:logininfor:remove', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1044, '日志导出', 501, 3, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:logininfor:export', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1045, '账户解锁', 501, 4, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:logininfor:unlock', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1046, '在线查询', 109, 1, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:online:query', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1047, '批量强退', 109, 2, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:online:batchLogout', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1048, '单条强退', 109, 3, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:online:forceLogout', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1049, '任务查询', 110, 1, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:job:query', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1050, '任务新增', 110, 2, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:job:add', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1051, '任务修改', 110, 3, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:job:edit', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1052, '任务删除', 110, 4, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:job:remove', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1053, '状态修改', 110, 5, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:job:changeStatus', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1054, '任务导出', 110, 6, '#', '', '', 1, 0, 'F', '0', '0', 'monitor:job:export', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1055, '生成查询', 116, 1, '#', '', '', 1, 0, 'F', '0', '0', 'tool:gen:query', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1056, '生成修改', 116, 2, '#', '', '', 1, 0, 'F', '0', '0', 'tool:gen:edit', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1057, '生成删除', 116, 3, '#', '', '', 1, 0, 'F', '0', '0', 'tool:gen:remove', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1058, '导入代码', 116, 4, '#', '', '', 1, 0, 'F', '0', '0', 'tool:gen:import', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1059, '预览代码', 116, 5, '#', '', '', 1, 0, 'F', '0', '0', 'tool:gen:preview', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1060, '生成代码', 116, 6, '#', '', '', 1, 0, 'F', '0', '0', 'tool:gen:code', '#', 0, 1,
+                    '2023-06-03 21:32:29', 1, NULL, ''),
+                   (1061, '客户端管理查询', 123, 1, '#', '', '', 1, 0, 'F', '0', '0', 'system:client:query', '#', 0, 1,
+                    '2024-01-03 21:29:43', NULL, NULL, ''),
+                   (1062, '客户端管理新增', 123, 2, '#', '', '', 1, 0, 'F', '0', '0', 'system:client:add', '#', 0, 1,
+                    '2024-01-03 21:29:43', NULL, NULL, ''),
+                   (1063, '客户端管理修改', 123, 3, '#', '', '', 1, 0, 'F', '0', '0', 'system:client:edit', '#', 0, 1,
+                    '2024-01-03 21:29:43', NULL, NULL, ''),
+                   (1064, '客户端管理删除', 123, 4, '#', '', '', 1, 0, 'F', '0', '0', 'system:client:remove', '#', 0, 1,
+                    '2024-01-03 21:29:43', NULL, NULL, ''),
+                   (1065, '客户端管理导出', 123, 5, '#', '', '', 1, 0, 'F', '0', '0', 'system:client:export', '#', 0, 1,
+                    '2024-01-03 21:29:43', NULL, NULL, ''),
+                   (1600, '文件查询', 118, 1, '#', '', '', 1, 0, 'F', '0', '0', 'system:oss:query', '#', 0, 1,
+                    '2023-12-25 15:15:25', NULL, NULL, ''),
+                   (1601, '文件上传', 118, 2, '#', '', '', 1, 0, 'F', '0', '0', 'system:oss:upload', '#', 0, 1,
+                    '2023-12-25 15:15:25', NULL, NULL, ''),
+                   (1602, '文件下载', 118, 3, '#', '', '', 1, 0, 'F', '0', '0', 'system:oss:download', '#', 0, 1,
+                    '2023-12-25 15:15:25', NULL, NULL, ''),
+                   (1603, '文件删除', 118, 4, '#', '', '', 1, 0, 'F', '0', '0', 'system:oss:remove', '#', 0, 1,
+                    '2023-12-25 15:15:25', NULL, NULL, ''),
+                   (1606, '租户查询', 121, 1, '#', '', '', 1, 0, 'F', '0', '0', 'system:tenant:query', '#', 0, 1,
+                    '2024-01-03 20:11:18', NULL, NULL, ''),
+                   (1607, '租户新增', 121, 2, '#', '', '', 1, 0, 'F', '0', '0', 'system:tenant:add', '#', 0, 1,
+                    '2024-01-03 20:11:18', NULL, NULL, ''),
+                   (1608, '租户修改', 121, 3, '#', '', '', 1, 0, 'F', '0', '0', 'system:tenant:edit', '#', 0, 1,
+                    '2024-01-03 20:11:18', NULL, NULL, ''),
+                   (1609, '租户删除', 121, 4, '#', '', '', 1, 0, 'F', '0', '0', 'system:tenant:remove', '#', 0, 1,
+                    '2024-01-03 20:11:18', NULL, NULL, ''),
+                   (1610, '租户导出', 121, 5, '#', '', '', 1, 0, 'F', '0', '0', 'system:tenant:export', '#', 0, 1,
+                    '2024-01-03 20:11:18', NULL, NULL, ''),
+                   (1611, '租户套餐查询', 122, 1, '#', '', '', 1, 0, 'F', '0', '0', 'system:tenantPackage:query', '#',
+                    0, 1, '2024-01-03 20:11:19', NULL, NULL, ''),
+                   (1612, '租户套餐新增', 122, 2, '#', '', '', 1, 0, 'F', '0', '0', 'system:tenantPackage:add', '#', 0,
+                    1, '2024-01-03 20:11:19', NULL, NULL, ''),
+                   (1613, '租户套餐修改', 122, 3, '#', '', '', 1, 0, 'F', '0', '0', 'system:tenantPackage:edit', '#', 0,
+                    1, '2024-01-03 20:11:19', NULL, NULL, ''),
+                   (1614, '租户套餐删除', 122, 4, '#', '', '', 1, 0, 'F', '0', '0', 'system:tenantPackage:remove', '#',
+                    0, 1, '2024-01-03 20:11:19', NULL, NULL, ''),
+                   (1615, '租户套餐导出', 122, 5, '#', '', '', 1, 0, 'F', '0', '0', 'system:tenantPackage:export', '#',
+                    0, 1, '2024-01-03 20:11:19', NULL, NULL, ''),
+                   (1620, '配置列表', 118, 5, '#', '', '', 1, 0, 'F', '0', '0', 'system:ossConfig:list', '#', 0, 1,
+                    '2023-12-25 15:15:25', NULL, NULL, ''),
+                   (1621, '配置添加', 118, 6, '#', '', '', 1, 0, 'F', '0', '0', 'system:ossConfig:add', '#', 0, 1,
+                    '2023-12-25 15:15:25', NULL, NULL, ''),
+                   (1622, '配置编辑', 118, 6, '#', '', '', 1, 0, 'F', '0', '0', 'system:ossConfig:edit', '#', 0, 1,
+                    '2023-12-25 15:15:25', NULL, NULL, ''),
+                   (1623, '配置删除', 118, 6, '#', '', '', 1, 0, 'F', '0', '0', 'system:ossConfig:remove', '#', 0, 1,
+                    '2023-12-25 15:15:25', NULL, NULL, '')
+            ;
+            -- endregion
+
+            -- region sys_oss_config 数据初始化
+            INSERT INTO `sys_oss_config` (`oss_config_id`, `tenant_id`, `config_key`, `access_key`, `secret_key`,
+                                          `bucket_name`, `prefix`, `endpoint`, `domain`, `is_https`, `region`,
+                                          `access_policy`, `status`, `ext1`, `version`, `create_by`, `create_time`,
+                                          `update_by`, `update_time`, `remark`)
+            VALUES (1, 1, 'minio', 'ruoyi-flex', 'ruoyi-flex@369', 'ruoyi-flex', '', '127.0.0.1:9000', '', 'N', '', '1',
+                    '0', '', 4, 1, '2023-11-30 11:54:13', 1, '2024-01-07 19:53:44', ''),
+                   (2, 1, 'qiniu', 'XXXXXXXXXXXXXXX', 'XXXXXXXXXXXXXXX', 'ruoyi-flex', '', 's3-cn-north-1.qiniucs.com',
+                    '', 'N', '', '1', '1', '', 0, 1, '2023-11-30 11:54:13', 1, '2023-12-01 14:25:43', NULL),
+                   (3, 1, 'aliyun', 'XXXXXXXXXXXXXXX', 'XXXXXXXXXXXXXXX', 'ruoyi-flex', '',
+                    'oss-cn-beijing.aliyuncs.com', '', 'N', '', '1', '1', '', 0, 1, '2023-11-30 11:54:13', 1,
+                    '2023-12-01 14:25:48', NULL),
+                   (4, 1, 'qcloud', 'XXXXXXXXXXXXXXX', 'XXXXXXXXXXXXXXX', 'ruoyi-flex', '',
+                    'cos.ap-beijing.myqcloud.com', '', 'N', '', '1', '1', '', 0, 1, '2023-11-30 11:54:13', 1,
+                    '2023-12-01 14:26:02', NULL);
+            -- endregion
+
+            -- region sys_post 数据初始化
+            INSERT INTO `sys_post` (`post_id`, `tenant_id`, `post_code`, `post_name`, `post_sort`, `status`, `version`,
+                                    `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
+            VALUES (1, 1, 'ceo', '董事长', 1, '0', 0, 1, '2023-06-03 21:32:28', 1, '2023-09-02 15:43:55', ''),
+                   (2, 1, 'se', '项目经理', 2, '0', 0, 1, '2023-06-03 21:32:28', 1, NULL, ''),
+                   (3, 1, 'hr', '人力资源', 3, '0', 0, 1, '2023-06-03 21:32:28', 1, NULL, ''),
+                   (4, 1, 'users', '普通员工', 4, '0', 0, 1, '2023-06-03 21:32:28', 1, '2023-07-13 21:30:24', ''),
+                   (65917508166729728, 1, 'deptLeader', '部门管理岗', 6, '0', 1, 1, '2023-10-01 10:33:39', 1,
+                    '2024-01-07 21:42:57', '部门负责人岗位');
+            -- endregion
+
+            -- region sys_role 数据初始化
+            INSERT INTO `sys_role` (`role_id`, `tenant_id`, `role_name`, `role_key`, `role_sort`, `data_scope`,
+                                    `menu_check_strictly`, `dept_check_strictly`, `status`, `version`, `del_flag`,
+                                    `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
+            VALUES (1, 1, '超级管理员角色', 'SuperAdminRole', 1, '1', 1, 1, '0', 0, 0, 1, '2023-06-03 21:32:28', 1,
+                    NULL, '超级管理员');
+            -- endregion
+
+            -- region sys_tenant 数据初始化
+            INSERT INTO `sys_tenant` (`tenant_id`, `contact_user_name`, `contact_phone`, `company_name`,
+                                      `license_number`, `address`, `intro`, `domain`, `remark`, `package_id`,
+                                      `expire_time`, `account_count`, `version`, `status`, `del_flag`, `create_by`,
+                                      `create_time`, `update_by`, `update_time`)
+            VALUES (1, '联系人', '16888888888', 'Ruoyi-Flex公司', NULL, NULL, 'RuoYi-Flex多租户通用后台管理管理系统',
+                    NULL, NULL, NULL, NULL, -1, 0, '0', 0, 1, '2024-01-03 20:08:03', NULL, NULL);
+            -- endregion
+
+            -- region sys_user 数据初始化
+            INSERT INTO `sys_user` (`user_id`, `tenant_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`,
+                                    `phonenumber`, `gender`, `avatar`, `password`, `status`, `version`, `del_flag`,
+                                    `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`,
+                                    `remark`)
+            VALUES (1, 1, 1, 'superadmin', '超级管理员', 'sys_user', 'ry@163.com', '15888888888', '1', NULL,
+                    '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', 8, 0, '0:0:0:0:0:0:0:1',
+                    '2024-01-08 10:51:57', 1, '2023-06-03 21:32:28', 1, '2024-01-08 10:51:57', '管理员');
+            -- endregion
+
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

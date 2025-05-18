@@ -1,0 +1,2 @@
+com.ruoyi.common.orm.config.PagehelperConfig
+com.ruoyi.common.orm.config.MyBatisFlexConfig

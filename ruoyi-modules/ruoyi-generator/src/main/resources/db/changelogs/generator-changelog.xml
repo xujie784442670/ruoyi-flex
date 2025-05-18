@@ -1,0 +1,68 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="xujie (generated)" id="1747555580318-1">
+        <createTable remarks="代码生成业务表" tableName="gen_table">
+            <column name="table_id" remarks="编号" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValue="" name="table_name" remarks="表名称" type="VARCHAR(200)"/>
+            <column defaultValue="" name="table_comment" remarks="表描述" type="VARCHAR(500)"/>
+            <column name="sub_table_name" remarks="关联子表的表名" type="VARCHAR(64)"/>
+            <column name="sub_table_fk_name" remarks="子表关联的外键名" type="VARCHAR(64)"/>
+            <column defaultValue="" name="class_name" remarks="实体类名称" type="VARCHAR(100)"/>
+            <column defaultValue="crud" name="tpl_category" remarks="使用的模板（crud单表操作 tree树表操作）" type="VARCHAR(200)"/>
+            <column name="package_name" remarks="生成包路径" type="VARCHAR(100)"/>
+            <column name="module_name" remarks="生成模块名" type="VARCHAR(30)"/>
+            <column name="business_name" remarks="生成业务名" type="VARCHAR(30)"/>
+            <column name="function_name" remarks="生成功能名" type="VARCHAR(50)"/>
+            <column name="function_author" remarks="生成功能作者" type="VARCHAR(50)"/>
+            <column defaultValue="0" name="gen_type" remarks="生成代码方式（0zip压缩包 1自定义路径）" type="CHAR(1)"/>
+            <column defaultValue="/" name="gen_path" remarks="生成路径（不填默认项目路径）" type="VARCHAR(200)"/>
+            <column name="options" remarks="其它生成选项" type="VARCHAR(1000)"/>
+            <column defaultValueNumeric="0" name="version" remarks="乐观锁" type="INT"/>
+            <column defaultValueNumeric="0" name="create_by" remarks="创建者" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_time" remarks="创建时间" type="datetime(0)"/>
+            <column defaultValueNumeric="0" name="update_by" remarks="更新者" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="update_time" remarks="更新时间" type="datetime(0)"/>
+            <column name="remark" remarks="备注" type="VARCHAR(500)"/>
+            <column defaultValueNumeric="1" name="edit_columns" type="TINYINT(3)"/>
+        </createTable>
+        <createTable remarks="代码生成业务表字段" tableName="gen_table_column">
+            <column name="column_id" remarks="编号" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="table_id" remarks="归属表编号" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="column_name" remarks="列名称" type="VARCHAR(200)"/>
+            <column name="column_comment" remarks="列描述" type="VARCHAR(500)"/>
+            <column name="column_type" remarks="列类型" type="VARCHAR(100)"/>
+            <column name="java_type" remarks="JAVA类型" type="VARCHAR(500)"/>
+            <column name="java_field" remarks="JAVA字段名" type="VARCHAR(200)"/>
+            <column name="is_pk" remarks="是否主键（1是）" type="CHAR(1)"/>
+            <column name="is_increment" remarks="是否自增（1是）" type="CHAR(1)"/>
+            <column name="is_required" remarks="是否必填（1是）" type="CHAR(1)"/>
+            <column name="is_insert" remarks="是否为插入字段（1是）" type="CHAR(1)"/>
+            <column name="is_edit" remarks="是否编辑字段（1是）" type="CHAR(1)"/>
+            <column name="is_list" remarks="是否列表字段（1是）" type="CHAR(1)"/>
+            <column name="is_query" remarks="是否查询字段（1是）" type="CHAR(1)"/>
+            <column defaultValue="EQ" name="query_type" remarks="查询方式（等于、不等于、大于、小于、范围）" type="VARCHAR(200)"/>
+            <column name="html_type" remarks="显示类型（文本框、文本域、下拉框、复选框、单选框、日期控件）" type="VARCHAR(200)"/>
+            <column defaultValue="" name="dict_type" remarks="字典类型" type="VARCHAR(200)"/>
+            <column name="sort" remarks="排序" type="INT"/>
+            <column defaultValueNumeric="0" name="version" remarks="乐观锁" type="INT"/>
+            <column defaultValueNumeric="0" name="create_by" remarks="创建者" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_time" remarks="创建时间" type="datetime(0)"/>
+            <column defaultValueNumeric="0" name="update_by" remarks="更新者" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="update_time" remarks="更新时间" type="datetime(0)"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
